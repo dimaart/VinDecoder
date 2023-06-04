@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        // Decode button on click listener
         val decodeButton:Button = findViewById(R.id.button)
         decodeButton.setOnClickListener {
             val vinString: TextInputEditText = findViewById(R.id.textInput)
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
        }
 
     }
-
+    // Function that does api request
      fun getData(){
         val api: ApiService = Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity() {
              val response : Response<myData> = api.getData(vin).awaitResponse() // Added suspend to getData() function
              if (response.isSuccessful){
                  val data: myData = response.body()!!
+                 // Assigning response to my string builder
                  val myStringBuilder = StringBuffer()
                  myStringBuilder.append(data.Results.get(0).Make)
                  myStringBuilder.append("\n")
@@ -51,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                  myStringBuilder.append(data.Results.get(0).ModelYear)
 
                  Log.d("MY RESPONSE", myStringBuilder.toString())
+                 // Adding vehicle information to the text view
                  val resultTextView: TextView = findViewById(R.id.textView)
                  resultTextView.text = myStringBuilder
                  Log.d("HERE", myStringBuilder.toString())
